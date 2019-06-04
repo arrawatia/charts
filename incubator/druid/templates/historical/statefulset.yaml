@@ -88,6 +88,29 @@ spec:
         - name: DB_PORT
           value: "3306"
         {{- end }}
+        {{- if .Values.postgresql.enabled }}
+        - name: DB_HOST
+          value: {{ .Release.Name }}-postgresql
+        - name: DB_TYPE
+          value: postgresql
+        - name: DB_USERNAME
+          value: {{ .Values.postgresql.postgresqlUsername }}
+        - name: DB_PASSWORD
+          value: {{ .Values.postgresql.postgresqlPassword }}
+        - name: DB_DBNAME
+          value: {{ .Values.postgresql.postgresqlDatabase }}
+        - name: DB_PORT
+          value: "5432"
+        {{- end }}
+        - name: GOOGLE_STORAGE_BUCKET
+          value: {{ .Values.deepStorage.bucket }}
+        - name: GOOGLE_STORAGE_PREFIX
+          value: {{ .Release.Name }}/druid/segments
+        - name: GOOGLE_INDEXING_BUCKET
+          value: {{ .Values.deepStorage.bucket }}
+        - name: GOOGLE_INDEXING_PREFIX
+          value: {{ .Release.Name }}/druid/indexing-logs
+
         - name: JAVA_OPTS
           value: {{ .Values.historical.javaOpts }}
         {{- range $key, $value := .Values.env }}
